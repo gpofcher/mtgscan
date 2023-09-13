@@ -1,0 +1,38 @@
+# This is the Azure implementation, reproduced here for me to add comments as I figure out how it works -GLP
+
+headers = {'Ocp-Apim-Subscription-Key': self.subscription_key} #API Key
+
+# Code for accepting both image URLs and files I think
+json, data = None, None
+if is_url(image):
+    json = {'url': image}
+else:
+    headers['Content-Type'] = 'application/octet-stream'
+    data = image
+    if not is_base64:
+        with open(image, "rb") as f:
+            data = f.read()
+
+logging.info(f"Send {image} to Azure")
+response = requests.post(self.text_recognition_url, headers=headers, json=json, data=data) # Send the image to Azure OCR. Paramaters: (API URL, Headers (for API key), json version of image, data version of image)
+
+response.raise_for_status() # check for an API error
+
+# While loop to request the OCR result repeatedly until it's ready
+poll = True
+while poll:
+    response_final = requests.get(response.headers["Operation-Location"], headers=headers)
+    analysis = response_final.json()
+    time.sleep(1)
+    
+    # If the API sends the data back, end loop
+    if "analyzeResult" in analysis:
+        poll = False
+    
+    # If request failed, end loop
+    if "status" in analysis and analysis['status'] == 'failed':
+        poll = False
+
+box_texts = BoxTextList()
+for line in analysis["analyzeResult"]["readResults"][0]["lines"]:
+    box_texts.add(line["boundingBox"], line["text"])
