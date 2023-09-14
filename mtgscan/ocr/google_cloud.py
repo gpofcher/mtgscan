@@ -22,7 +22,7 @@ class Google(OCR):
     def __str__(self):
         return "Google"
     
-    def image_to_box_texts(self, image: str) -> BoxTextList:
+    def image_to_text_list(self, image: str) -> list:
 
         client = vision.ImageAnnotatorClient()
 
@@ -53,7 +53,4 @@ class Google(OCR):
                 "https://cloud.google.com/apis/design/errors".format(response.error.message)
             )
 
-        box_texts = BoxTextList()
-        for line in lines:
-            box_texts.add(line)
-        return box_texts
+        return lines
