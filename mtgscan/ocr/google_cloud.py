@@ -9,6 +9,11 @@ from .ocr import OCR
 from google.cloud import vision
 
 class Google(OCR):
+    """
+    Class for Google OCR
+
+    PAPER SUPPORT ONLY: does not support use of multiplier numbers (e.g. "x4")
+    """
     def __init__(self):
         try:
             # Credential code goes here
@@ -23,6 +28,9 @@ class Google(OCR):
         return "Google"
     
     def image_to_text_list(self, image: str) -> list:
+        """
+        Takes an image and returns of a list containing each line of text
+        """
 
         client = vision.ImageAnnotatorClient()
 
