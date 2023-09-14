@@ -61,4 +61,7 @@ class Google(OCR):
                 "https://cloud.google.com/apis/design/errors".format(response.error.message)
             )
 
-        return lines
+        box_texts = BoxTextList()
+        for line in lines:
+            box_texts.add(line)
+        return box_texts

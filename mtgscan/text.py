@@ -185,21 +185,6 @@ class MagicRecognition:
         box_cards = self.box_texts_to_cards(box_texts)
         self._assign_stacked(box_texts, box_cards)
         return self._box_cards_to_deck(box_cards)
-    
-    def list_to_deck(self, texts: list) -> Deck:
-        """Convert raw list of texts to decklist
-
-        Parameters
-        ----------
-        texts : lists
-            Raw texts list given by Google OCR
-
-        Returns
-        -------
-        Deck
-            Decklist obtained from `texts`
-        """
-        cards = self.box_texts_to_cards(texts)
 
     def _search(self, text):
         """If `text` can be recognized as a Magic card, return that card. Otherwise, return None."""
