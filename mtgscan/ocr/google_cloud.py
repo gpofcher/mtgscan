@@ -34,17 +34,18 @@ class Google(OCR):
 
         logging.info(f"Send {image} to Google")
         response = client.text_detection(image = data)
-        texts = response.text_annotations
-        print("Texts:")
+        annotations = response.text_annotations
+        text = str(annotations[0])
 
-        for text in texts:
-            print(f'\n"{text.description}"')
+        
+        description_start = text.rindex('description: "') + 14
+        description_end = text.index('"\nbounding_poly')
+        print(description_start, description_end)
+        description = text[description_start:description_end]
+        print(description)
+        lines = description.split("\\n")
+        print(lines)
 
-            vertices = [
-                f"({vertex.x},{vertex.y})" for vertex in text.bounding_poly.vertices
-            ]
-
-            print("bounds: {}".format(",".join(vertices)))
 
         if response.error.message:
             raise Exception(
@@ -52,6 +53,7 @@ class Google(OCR):
                 "https://cloud.google.com/apis/design/errors".format(response.error.message)
             )
 
-        # box_texts = BoxTextList()
-        
-        # return box_texts
+        box_texts = BoxTextList()
+        for line in lines:
+            box_texts.add(line)
+        return box_texts
