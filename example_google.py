@@ -1,6 +1,6 @@
 # basic usage of mtgscan with the Google Cloud Vision API
 
-from mtgscan.text import MagicRecognition
+from mtgscan.text_google import MagicRecognition
 from mtgscan.ocr.google_cloud import Google
 
 gcp = Google()

@@ -45,6 +45,11 @@ class Google(OCR):
         annotations = response.text_annotations
         text = str(annotations[0])
 
+        if response.error.message:
+            raise Exception(
+                "{}\nFor more info on error messages, check: "
+                "https://cloud.google.com/apis/design/errors".format(response.error.message)
+            )
         
         description_start = text.rindex('description: "') + 14
         description_end = text.index('"\nbounding_poly')
@@ -55,13 +60,7 @@ class Google(OCR):
         print(lines)
 
 
-        if response.error.message:
-            raise Exception(
-                "{}\nFor more info on error messages, check: "
-                "https://cloud.google.com/apis/design/errors".format(response.error.message)
-            )
+        
 
-        box_texts = BoxTextList()
-        for line in lines:
-            box_texts.add(line)
-        return box_texts
+    
+        return lines
