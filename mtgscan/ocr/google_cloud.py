@@ -59,8 +59,4 @@ class Google(OCR):
         lines = description.split("\\n")
         print(lines)
 
-
-        
-
-    
         return lines

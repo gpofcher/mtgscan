@@ -169,21 +169,21 @@ class MagicRecognition:
         deck.sideboard = sideboard
         return deck
 
-    def box_texts_to_deck(self, box_texts: BoxTextList) -> Deck:
+    def texts_to_deck(self, texts: list) -> Deck:
         """Convert raw texts to decklist
 
         Parameters
         ----------
-        box_texts : BoxTextList
+        texts : List
             Raw texts given by an OCR
 
         Returns
         -------
         Deck
-            Decklist obtained from `box_texts`
+            Decklist obtained from `texts`
         """
-        box_cards = self.box_texts_to_cards(box_texts)
-        self._assign_stacked(box_texts, box_cards)
+        box_cards = self.box_texts_to_cards(texts)
+        self._assign_stacked(texts, box_cards)
         return self._box_cards_to_deck(box_cards)
 
     def _search(self, text):

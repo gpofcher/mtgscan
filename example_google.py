@@ -1,11 +1,30 @@
-# basic usage of mtgscan with the Google Cloud Vision API
+# simple example of using the GCP Vision OCR on an image
+from google.cloud import vision
 
-from mtgscan.text_google import MagicRecognition
-from mtgscan.ocr.google_cloud import Google
+client = vision.ImageAnnotatorClient()
+imagePath = "tests\samples\cube_RB\image.jpg"
 
-gcp = Google()
-rec = MagicRecognition(file_all_cards="all_cards.txt", file_keywords="Keywords.json")
-box_texts = gcp.image_to_box_texts("tests\samples\cube_RB\image.jpg")
-deck = rec.box_texts_to_deck(box_texts)
-for c, k in deck:
-    print(c, k)
+# only local files for now
+with open(imagePath, "rb") as image_file:
+    content = image_file.read()
+
+data = vision.Image(content=content)
+
+response = client.text_detection(image = data)
+annotations = response.text_annotations
+text = str(annotations[0])
+
+if response.error.message:
+    raise Exception(
+        "{}\nFor more info on error messages, check: "
+        "https://cloud.google.com/apis/design/errors".format(response.error.message)
+    )
+
+description_start = text.rindex('description: "') + 14
+description_end = text.index('"\nbounding_poly')
+print(description_start, description_end)
+description = text[description_start:description_end]
+lines = description.split("\\n")
+print(lines)
+for line in lines:
+    print(line)
