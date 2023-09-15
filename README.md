@@ -1,3 +1,7 @@
+**DO NOT USE: My additions are incomplete and nonfunctional. Use the original repo instead.**
+
+Original readme below:
+
 # MTGScan
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![CodeFactor](https://www.codefactor.io/repository/github/fortierq/mtgscan/badge)](https://www.codefactor.io/repository/github/fortierq/mtgscan)
